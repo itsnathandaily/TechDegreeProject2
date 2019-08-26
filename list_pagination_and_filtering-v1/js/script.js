@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
    const maxPerPage = 10;
 
    const ul = document.createElement('ul');
-   let students = [
+   /* let students = [
       {
          firstname: 'iboya',
          lastname: 'vat',
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
          email: 'aapo.niskanen@example.com',
          joined: '06/15/12'
       }
-   ]
+   ] */
 
 
    /*** 
@@ -84,6 +84,6 @@ let appendPageLinks = (list) => {
 }
 
 
-showPage();
+
    // Remember to delete the comments that came with this file, and replace them with your own code comments.
 });
