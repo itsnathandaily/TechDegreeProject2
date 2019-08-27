@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
       scoped to that function.
    ***/
    const pageDiv = document.querySelector('.page');
-   const studentList = document.querySelector('.student-list');
+   let studentList = document.getElementsByClassName('student-item cf');
    console.log(studentList);
+   console.log(studentList.length);
    const maxPerPage = 10;
 
    const ul = document.createElement('ul');
@@ -55,35 +56,77 @@ document.addEventListener('DOMContentLoaded', () => {
           "invoke" the function 
    ***/
 
-   const showPage = (list,page)=> {
+   const showPage = (list, page) => {
       const startIndex = (page * 10) - 10;
       const endIndex = (page * 10) - 1;
       for (let i = 0; i < list.length; i++) {
-         if (i >=startIndex && i<=endIndex){
+         if (i >= startIndex && i <= endIndex) {
             list[i].style.display = 'block';
-         }else {
+         } else {
             list[i].style.display = 'none';
          }
       }
    };
 
 
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
+   /*** 
+      Create the `appendPageLinks function` to generate, append, and add 
+      functionality to the pagination buttons.
+   ***/
 
-let appendPageLinks = (list) => {
-   console.log("hello");
-   const div = document.createElement('div');
-   div.className = "pagination";
-   pageDiv.appendChild(div);
-   const ul = document.createElement('ul');
-   div.appendChild(ul);
-   
-}
+   let appendPageLinks = () => {
+      //console.log("hello");
+      //console.log(studentList.length);
+      const numberOfPagination = Math.ceil(studentList.length / maxPerPage);
+      //console.log(numberOfPagination);
+      const div = document.createElement('div');
+      div.className = "pagination";
+      pageDiv.appendChild(div);
+      const ul = document.createElement('ul');
+      div.appendChild(ul);
+      let buttons = [];
+      for (let i = 0; i < numberOfPagination; i++) {
+         const li = document.createElement('li');
+         let button = 'a' + i;
+         console.log(button);
+
+         this[button] = document.createElement('a');
+         console.log(this[button]);
+         this[button].textContent = i + 1;
+         //buttons.push(this[button].textContent);
+         buttons.push(this[button]);
+         console.log(buttons);
+         //this[button].classList.remove('active');
+         //eval(li.appendChild(button));
+         li.appendChild(this[button]);
+         ul.appendChild(li);
+
+         this[button].addEventListener('click', (event) => {
+            console.log(`button ${event.target.textContent} is clicked`);
+            showPage(studentList, event.target.textContent);
+            event.target.classList.add('active');
+            //console.log[buttons];
+
+            buttons.forEach(item => {
+               if (item.textContent !== event.target.textContent) {
+                  item.classList.remove('active');
+               }
+            })
+
+         });
+
+         buttons.forEach(item => {
+            //if(item)
+         });
+      }
 
 
+
+
+
+   }
+   showPage(studentList,1);
+   appendPageLinks();
 
    // Remember to delete the comments that came with this file, and replace them with your own code comments.
 });
