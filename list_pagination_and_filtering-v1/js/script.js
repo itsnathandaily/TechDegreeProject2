@@ -4,61 +4,28 @@ document.addEventListener('DOMContentLoaded', () => {
    FSJS project 2 - List Filter and Pagination
    ******************************************/
 
-   // Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
-
-   ;
    /*** 
-      Add your global variables that store the DOM elements you will 
-      need to reference and/or manipulate. 
-      
-      But be mindful of which variables should be global and which 
-      should be locally scoped to one of the two main functions you're 
-      going to create. A good general rule of thumb is if the variable 
-      will only be used inside of a function, then it can be locally 
-      scoped to that function.
+     pageDive is the main div of the page
+     studentList is a list of all the students in index.html 
+     studentsPerPage is the maximum number of students that can be rendered on a page.
+      These variables are needed throughout the script , so they are declared globally
+      here.
    ***/
    const pageDiv = document.querySelector('.page');
    let studentList = document.getElementsByClassName('student-item cf');
-   console.log(studentList);
-   console.log(studentList.length);
-   const maxPerPage = 10;
-
-   const ul = document.createElement('ul');
-   /* let students = [
-      {
-         firstname: 'iboya',
-         lastname: 'vat',
-         email: 'iboya.vat@example.com',
-         joined: '07/15/15',
-         image: ''
-      },
-      {
-         firstname: 'aapo',
-         lastname: 'niskanen',
-         email: 'aapo.niskanen@example.com',
-         joined: '06/15/12'
-      }
-   ] */
+   const studentsPerPage = 10;
 
 
    /*** 
-      Create the `showPage` function to hide all of the items in the 
-      list except for the ten you want to show.
-   
-      Pro Tips: 
-        - Keep in mind that with a list of 54 students, the last page 
-          will only display four.
-        - Remember that the first student has an index of 0.
-        - Remember that a function `parameter` goes in the parens when 
-          you initially define the function, and it acts as a variable 
-          or a placeholder to represent the actual function `argument` 
-          that will be passed into the parens later when you call or 
-          "invoke" the function 
+          `showPage ` is the rendering function
+          It accepts a list and a pagenumber.  The showPage function, when invoked
+          will show all students on the page indicated by pagenumber.
+          There can only be 10 students per page as maximum
    ***/
 
-   const showPage = (list, page) => {
-      const startIndex = (page * 10) - 10;
-      const endIndex = (page * 10) - 1;
+   const showPage = (list, pageNumber) => {
+      const startIndex = (pageNumber * studentsPerPage) - studentsPerPage;
+      const endIndex = (pageNumber * studentsPerPage) - 1;
       for (let i = 0; i < list.length; i++) {
          if (i >= startIndex && i <= endIndex) {
             list[i].style.display = 'block';
@@ -70,63 +37,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
    /*** 
-      Create the `appendPageLinks function` to generate, append, and add 
-      functionality to the pagination buttons.
+      
+      In the `appendPageLinks function`, numberOfPagination is used to determine how 
+      many tag buttons will be created.
+      Each tag button is stored in the buttons array.
+      li and a tags are created for each pagination and appended to the page
    ***/
 
    let appendPageLinks = () => {
-      //console.log("hello");
-      //console.log(studentList.length);
-      const numberOfPagination = Math.ceil(studentList.length / maxPerPage);
-      //console.log(numberOfPagination);
+
+      const numberOfPagination = Math.ceil(studentList.length / studentsPerPage);
       const div = document.createElement('div');
       div.className = "pagination";
       pageDiv.appendChild(div);
       const ul = document.createElement('ul');
       div.appendChild(ul);
       let buttons = [];
+
+      //tag li and a tag buttons are created
+      // the buttons are dynamically created
+      //for each pagination (in our case , its 6 for index.html)
       for (let i = 0; i < numberOfPagination; i++) {
          const li = document.createElement('li');
          let button = 'a' + i;
-         console.log(button);
 
          this[button] = document.createElement('a');
-         console.log(this[button]);
+         //each button is labeled, starting from 1 as the 1st button, not 0
          this[button].textContent = i + 1;
-         //buttons.push(this[button].textContent);
+         // and stored in the buttons array
          buttons.push(this[button]);
-         console.log(buttons);
-         //this[button].classList.remove('active');
-         //eval(li.appendChild(button));
          li.appendChild(this[button]);
          ul.appendChild(li);
 
+         //Here is the clicking event for any button
+         //upon clicking any button, showPage function is called with the studentList and 
+         //textContent -> indicating which button has been clicked
+         //when a button is click, it is classed as 'active' and highlighted
          this[button].addEventListener('click', (event) => {
-            console.log(`button ${event.target.textContent} is clicked`);
+            //console.log(`button ${event.target.textContent} is clicked`);
             showPage(studentList, event.target.textContent);
             event.target.classList.add('active');
-            //console.log[buttons];
-
+            //other buttons not click get classed as non-active
             buttons.forEach(item => {
                if (item.textContent !== event.target.textContent) {
                   item.classList.remove('active');
                }
-            })
+            });
 
          });
 
-         buttons.forEach(item => {
-            //if(item)
-         });
+
       }
 
 
-
-
-
    }
-   showPage(studentList,1);
+   // the page loads by default the first list from 1 - 10, so showPage is
+   //invoked with studentList and the number 1
+   showPage(studentList, 1);
+   //appendPageLinks is invoked to calculate pagination and show all the buttons needed
    appendPageLinks();
 
-   // Remember to delete the comments that came with this file, and replace them with your own code comments.
 });
