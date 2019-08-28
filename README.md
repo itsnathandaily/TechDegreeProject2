@@ -9,11 +9,16 @@ on a webpage.
 All features to be seen:
 
 1.There is a pagination of 10 students per page out of 54 students.
+
 2.There are Tag buttons that correspond to which page you wish to view.  Click on a tag button, and you will be taken to a page
+
 3.that corresponds to that tag button.
+
 4.There is a search form and button - Names can be searched with the search form and button.  Upon clicking the button,
 viewer will be automatically taken to the page the student has been listed in.
+
 5.'Keyup' is also implemented on the search form.
+
 6.If the name cannot be found, The is a message that reads "There are no results for your search, Sorry."
 
 Technique:
