@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
    const pageDiv = document.querySelector('.page');
    const studentList = document.getElementsByClassName('student-item cf');
    const pageHeaderDiv = document.getElementsByClassName('page-header cf')[0];
-   //const pageHeaderDiv = document.querySelector('.page-header cf');
    const searchDiv = document.createElement('div');
    searchDiv.className = "student-search";
    const searchForm = document.createElement('input');
@@ -30,15 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
    const studentsPerPage = 10;
    const innerPaginationDiv = document.createElement('div');
    let buttons = [];
-   let searchResults = [];
    let results = 0;
    const mainUl = document.querySelector('.student-list');
    let noResultsLi;
    /*** 
           `showPage ` is the rendering function
-          It accepts a list and a pagenumber.  The showPage function, when invoked
+          It takes a list and a pagenumber as parameters and renders the 
+          student list in pagination form.  
+          The showPage function, when invoked
           will show all students on the page indicated by pagenumber.
-          There can only be 10 students per page as maximum
+          There can only be 10 students per page as maximum in this example
    ***/
 
    const showPage = (list, pageNumber) => {
@@ -56,10 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
    /***    
-      In the `appendPageLinks function`, numberOfPagination is used to determine how 
+      The `appendPageLinks function`, creates the pagination number (based on the maxNumberOfStudentsPerPage) 
+      and tag/buttons needed for each page.
+      The pagination number is created and assigned
+      to variable numberOfPagination.
+      numberOfPagination is used to determine how 
       many tag buttons will be created.
-      Each tag button is stored in the buttons array.
-      li and a tags are created for each pagination and appended to the page
+      Each tag button is stored in the global array called `buttons`.
+      A `li` and `a`/button tag is created for each pagination and appended to the page
    ***/
 
    let appendPageLinks = () => {
@@ -70,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
       innerPaginationDiv.appendChild(ul);
 
 
-      /* tag li and a tag buttons (lets call them pagination button) are created
-         the a tag/pagination buttons are dynamically created,
+      /* tag li and a tag buttons (lets call them the pagination buttons) are created.
+         The a tag/pagination buttons are dynamically created via a for loop,
          for each page of 10 students (in our case (index.html), its a total 6 pagination buttons */
       for (let i = 0; i < numberOfPagination; i++) {
          const li = document.createElement('li');
@@ -85,11 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
          li.appendChild(this[button]);
          ul.appendChild(li);
 
-         /*  Here is the clicking event for any button
+         /*  TAG/BUTTON EVENTLISTER
           upon clicking any button, showPage function is called with the studentList and 
           textContent -> indicating which button has been clicked
           when a pagination button is click, it is classed as 'active' and highlighted */
          this[button].addEventListener('click', (event) => {
+            event.preventDefault();
             results = 0;
             clearNoResultsDisplay();
             showPage(studentList, event.target.textContent);
@@ -98,33 +103,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
    }
 
-   /* TODO COMMENTS */
-   let performSearch = (list) => {
-      if (searchForm.value.length !== 0) {
+   /* `performSearch()` function takes a list (studentList in our case) and a
+   searchForm inputs and check to see whether the item in the search form exists.
+   This function is invoked by the searchButton and searchForm eventlistener */
+   let performSearch = (list, input) => {
+      if (input.length !== 0) {
          for (let i = 0; i < list.length; i++) {
             const fullName = list[i].querySelector('h3');
-            if (fullName.textContent.toLowerCase().includes(searchForm.value.toLowerCase())) {
+            if (fullName.textContent.toLowerCase().includes(input.toLowerCase())) {
                list[i].style.display = 'block';
-               searchResults.push(list[i]);
                results++;
-               console.log(`list[i].style.display = 'block' results found is ${results}`);
                const pageButton = Math.floor(i / studentsPerPage);
                activatePaginationButton(pageButton);
             } else {
                list[i].style.display = 'none';
                if (i === list.length - 1 && results === 0) {
-                  console.log(`list[i].style.display = 'none' results found is ${results}`);
                   displayNoResults();
                }
             }
          }
-      } else if (searchForm.value.length === 0) {
+      } else if (input.length === 0) {
          showPage(studentList, 1);
       }
 
    };
 
-   /* TODO  COMMENTS   */
+   /* `activatePaginationButton()` function takes a button index as a parameter
+   and sets it active by adding 'active' to it's classList.
+   it also removes the 'active' class from all other buttons   */
    const activatePaginationButton = (buttonIndex) => {
       buttons.forEach(item => {
          if (buttons.indexOf(item) === buttonIndex) {
@@ -137,9 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
 
-   /* TODO COMMENTS */
+   /* The `displayNoResults()` function` dynamically creates a no results 
+   html message.  It is created in list and appended to the mainUl*/
    const displayNoResults = () => {
-      console.log(`displayNoResult results found is ${results}`);
       noResultsLi = document.createElement('LI');
       noResultsLi.className = "noresultsli";
       const noResultsDiv = document.createElement('div');
@@ -152,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-   /* The `clearNoResultsDisplay() function when invoked removes the 
+   /* The `clearNoResultsDisplay()`function when invoked removes the 
    "dynamic" no result message - (this message is 
       just a div appended a list, appended to mainUL).
       It checks that one exist first and if it does,
@@ -171,13 +177,14 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       results = 0;
       clearNoResultsDisplay();
-      performSearch(studentList);
+      performSearch(studentList, searchForm.value);
    });
 
-   searchForm.addEventListener('keyup', () => {
+   searchForm.addEventListener('keyup', (e) => {
+      e.preventDefault();
       results = 0;
       clearNoResultsDisplay();
-      performSearch(studentList);
+      performSearch(studentList, searchForm.value);
    });
 
 
