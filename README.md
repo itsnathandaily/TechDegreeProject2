@@ -25,14 +25,14 @@ Technique:
 
 I started by breaking every key feature into functions.
 -rendering -> showPage()
--pagination and pagination tag buttons -> appendPageLinks()
+-pagination and pagination tag buttons   -> appendPageLinks()
 
-  Extra credit functions :
--I also created a search and filtering function -> performSearch() triggered by a search form and button
+Extra credit functions :
+-I also created a search and filtering function   -> performSearch() triggered by a search form and button
 
--Then I went further to have error handling by creating a dynamic "no results found" html message -> noResultsDisplay()
+-Then I went further to have error handling by creating a dynamic "no results found" html message   -> noResultsDisplay()
 
--I also had to create a function to clear the message if needed -> clearNoResultsDisplay().  Achieving this was not easy, but it was done
+-I also had to create a function to clear the message if needed   -> clearNoResultsDisplay().  Achieving this was not easy, but it was done
 
 -Finally, i completed the project by adding a 'keyup' event listener to the search form 
 
